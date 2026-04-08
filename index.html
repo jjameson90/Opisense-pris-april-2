@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opisense — Prismodell 2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --sand-100:#FAFAF8;--sand-200:#F2EFE9;--sand-300:#E8E3DA;--sand-400:#CEC7BB;
+  --green-100:#EEF5EC;--green-200:#D6E8D2;--green-300:#AECFA8;--green-400:#7DAF76;
+  --green-500:#4F8B48;--green-600:#376B31;--green-700:#275226;--green-800:#1D3D1C;
+  --warm-900:#22201C;--ink:#111110;--mid:#4A4845;--muted:#7A7774;--rule:#E4E0D8;
+  --white:#FFFFFF;--serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;--ease:cubic-bezier(0.16,1,0.3,1);
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--sand-100);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{color:inherit;}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 52px;background:rgba(250,248,245,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(210,198,180,0.4);transition:box-shadow 0.3s;}
+.nav.shadow{box-shadow:0 2px 32px rgba(0,0,0,0.07);}
+.nav-logo{font-family:var(--serif);font-size:22px;font-weight:500;letter-spacing:0.015em;color:var(--ink);text-decoration:none;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-size:13px;color:var(--mid);text-decoration:none;transition:color 0.18s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-btn{font-family:var(--sans);font-size:13px;font-weight:500;padding:9px 22px;border-radius:100px;background:var(--green-600);color:var(--white);text-decoration:none;transition:background 0.18s,transform 0.15s;}
+.nav-btn:hover{background:var(--green-700);transform:translateY(-1px);}
+
+section{padding:108px 24px;}
+.wrap{max-width:1120px;margin:0 auto;}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--green-600);margin-bottom:16px;}
+.eyebrow::before{content:'';display:block;width:24px;height:1.5px;background:var(--green-500);flex-shrink:0;}
+.section-title{font-family:var(--serif);font-size:clamp(36px,4.5vw,60px);font-weight:300;line-height:1.06;letter-spacing:-0.02em;color:var(--ink);margin-bottom:14px;}
+.section-title em{font-style:italic;color:var(--green-600);}
+.section-lead{font-size:16px;font-weight:300;line-height:1.72;color:var(--mid);max-width:560px;}
+
+/* ═══ PLANS ═══ */
+.sec-plans{background:var(--white);padding-top:140px;}
+
+.solo-card{background:var(--sand-100);border:1px solid var(--rule);border-radius:22px;padding:36px 40px;display:grid;grid-template-columns:1.3fr 1fr 1.3fr;gap:40px;align-items:center;margin-top:52px;margin-bottom:60px;position:relative;overflow:hidden;}
+.solo-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green-300),var(--green-500));}
+.solo-kicker{font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-600);margin-bottom:8px;}
+.solo-name{font-family:var(--serif);font-size:42px;font-weight:300;letter-spacing:-0.02em;color:var(--ink);margin-bottom:4px;}
+.solo-tag{font-size:13px;font-weight:300;color:var(--mid);line-height:1.5;}
+.solo-price-col{text-align:center;}
+.solo-price{font-family:var(--serif);font-size:64px;font-weight:300;letter-spacing:-0.03em;color:var(--ink);line-height:1;}
+.solo-unit{font-size:12px;color:var(--muted);margin-top:4px;}
+.solo-impl{display:inline-block;margin-top:10px;font-size:11px;font-weight:500;background:var(--green-100);color:var(--green-700);padding:3px 12px;border-radius:100px;}
+.solo-value{margin-top:8px;font-size:12px;color:var(--green-600);font-weight:500;}
+.solo-quotas{list-style:none;}
+.solo-q{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--sand-300);font-size:13px;}
+.solo-q:last-child{border-bottom:none;}
+.solo-ql{color:var(--mid);font-weight:300;}
+.solo-qv{font-weight:500;}
+
+.plans-label{font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.plans-label::before{content:'';display:block;width:20px;height:1px;background:var(--sand-400);}
+.plans-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+.plan-card{background:var(--white);border:1px solid var(--rule);border-radius:22px;padding:28px 22px 24px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:transform 0.3s var(--ease),box-shadow 0.3s var(--ease),border-color 0.2s;}
+.plan-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:22px 22px 0 0;}
+.plan-card.t1::after{background:linear-gradient(90deg,#AECFA8,#7DAF76);}
+.plan-card.t2::after{background:linear-gradient(90deg,#7DAF76,#4F8B48);}
+.plan-card.t3::after{background:linear-gradient(90deg,#4F8B48,#376B31);}
+.plan-card.t4{background:var(--green-700);border-color:transparent;}
+.plan-card.t4::after{display:none;}
+.plan-card:not(.t4):hover{transform:translateY(-7px);box-shadow:0 20px 52px rgba(0,0,0,0.09);border-color:transparent;}
+
+.plan-size{font-size:10px;font-weight:500;letter-spacing:0.09em;text-transform:uppercase;color:var(--green-600);margin-bottom:4px;}
+.t4 .plan-size{color:var(--green-300);}
+.plan-name{font-family:var(--serif);font-size:26px;font-weight:400;color:var(--ink);margin-bottom:4px;}
+.t4 .plan-name{color:white;}
+.plan-tagline{font-size:12px;font-weight:300;color:var(--mid);margin-bottom:4px;line-height:1.4;}
+.t4 .plan-tagline{color:rgba(255,255,255,0.55);}
+.plan-peruser{font-size:11px;color:var(--green-600);font-weight:500;margin-bottom:16px;}
+.t4 .plan-peruser{color:var(--green-300);}
+.plan-price{font-family:var(--serif);font-size:38px;font-weight:300;letter-spacing:-0.03em;color:var(--ink);line-height:1;}
+.t4 .plan-price{color:white;}
+.plan-unit{font-size:11px;color:var(--muted);margin-top:3px;}
+.t4 .plan-unit{color:rgba(255,255,255,0.5);}
+.plan-impl{display:inline-block;font-size:10.5px;font-weight:500;background:var(--green-100);color:var(--green-700);padding:3px 10px;border-radius:100px;margin-top:10px;}
+.t4 .plan-impl{background:rgba(255,255,255,0.14);color:rgba(255,255,255,0.82);}
+.plan-sep{height:1px;background:var(--rule);margin:18px 0;}
+.t4 .plan-sep{background:rgba(255,255,255,0.14);}
+
+.plan-quotas{list-style:none;flex:1;}
+.plan-q{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--sand-200);font-size:12px;}
+.t4 .plan-q{border-color:rgba(255,255,255,0.09);}
+.plan-q:last-child{border-bottom:none;}
+.plan-ql{color:var(--mid);font-weight:300;}
+.t4 .plan-ql{color:rgba(255,255,255,0.55);}
+.plan-qv{font-weight:500;color:var(--ink);}
+.t4 .plan-qv{color:white;}
+
+.plan-persona{margin-top:16px;padding:11px 13px;background:var(--sand-100);border:1px solid var(--rule);border-radius:10px;}
+.t4 .plan-persona{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.12);}
+.plan-persona-label{font-size:9.5px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-600);margin-bottom:4px;}
+.t4 .plan-persona-label{color:var(--green-300);}
+.plan-persona-text{font-size:11.5px;font-weight:300;color:var(--mid);line-height:1.5;}
+.t4 .plan-persona-text{color:rgba(255,255,255,0.6);}
+
+.enterprise-bar{margin-top:18px;padding:22px 28px;background:var(--sand-100);border:1px solid var(--rule);border-radius:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.ebar-title{font-size:13.5px;font-weight:500;color:var(--ink);}
+.ebar-desc{font-size:13px;font-weight:300;color:var(--mid);margin-top:2px;}
+.ebar-btn{font-family:var(--sans);font-size:13px;font-weight:500;padding:10px 22px;border-radius:100px;background:var(--green-600);color:white;text-decoration:none;white-space:nowrap;transition:background 0.18s;}
+.ebar-btn:hover{background:var(--green-700);}
+
+/* ═══ AI-POENG ═══ */
+.sec-aipoeng{background:var(--sand-200);}
+.aipoeng-layout{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-top:52px;}
+
+.apc{background:var(--green-700);border-radius:22px;padding:44px 40px;}
+.apc-kicker{font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:12px;}
+.apc-title{font-family:var(--serif);font-size:38px;font-weight:300;line-height:1.05;letter-spacing:-0.02em;color:white;margin-bottom:14px;}
+.apc-title em{font-style:italic;color:var(--green-300);}
+.apc-body{font-size:14px;font-weight:300;line-height:1.72;color:rgba(255,255,255,0.7);margin-bottom:24px;}
+.apc-def{background:rgba(255,255,255,0.1);border-radius:14px;padding:18px 20px;}
+.apc-def-label{font-size:9.5px;font-weight:500;letter-spacing:0.09em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px;}
+.apc-def-text{font-size:13.5px;font-weight:300;color:rgba(255,255,255,0.8);line-height:1.65;}
+
+.ape-list{display:flex;flex-direction:column;gap:10px;}
+.ape-card{background:var(--white);border:1px solid var(--rule);border-radius:16px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:20px;transition:box-shadow 0.2s;}
+.ape-card:hover{box-shadow:0 6px 24px rgba(0,0,0,0.06);}
+.ape-tag{font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-600);margin-bottom:3px;}
+.ape-action{font-size:13.5px;font-weight:500;color:var(--ink);margin-bottom:2px;}
+.ape-desc{font-size:11.5px;font-weight:300;color:var(--muted);}
+.ape-right{text-align:right;flex-shrink:0;}
+.ape-poeng{font-family:var(--serif);font-size:26px;font-weight:300;color:var(--ink);line-height:1;}
+.ape-unit{font-size:10.5px;color:var(--muted);margin-top:2px;}
+
+.aip-note{margin-top:14px;padding:16px 18px;background:var(--sand-100);border:1px solid var(--rule);border-radius:14px;font-size:13px;font-weight:300;color:var(--mid);line-height:1.65;}
+.aip-note strong{font-weight:500;color:var(--ink);}
+
+/* ═══ OVERUSE ═══ */
+.sec-overuse{background:var(--white);}
+.ov-layout{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:52px;align-items:start;}
+.ov-text p{font-size:15px;font-weight:300;line-height:1.75;color:var(--mid);margin-bottom:16px;}
+.ov-table{width:100%;border-collapse:collapse;border-radius:18px;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.ov-table thead tr{background:var(--ink);}
+.ov-table th{padding:13px 20px;font-size:10px;font-weight:500;letter-spacing:0.09em;text-transform:uppercase;color:rgba(255,255,255,0.5);text-align:left;}
+.ov-table tbody tr{background:var(--sand-100);border-bottom:1px solid var(--sand-200);transition:background 0.14s;}
+.ov-table tbody tr:last-child{border-bottom:none;}
+.ov-table tbody tr:hover{background:var(--sand-200);}
+.ov-table td{padding:13px 20px;font-size:13px;font-weight:300;color:var(--ink);vertical-align:middle;}
+.ov-note-cell{font-size:11px;color:var(--muted);margin-top:3px;}
+.ov-pill{display:inline-block;font-size:12px;font-weight:500;padding:4px 12px;border-radius:100px;background:var(--green-100);color:var(--green-700);white-space:nowrap;}
+
+.cap-callout{background:var(--green-700);border-radius:20px;padding:36px 32px;}
+.cap-title{font-family:var(--serif);font-size:30px;font-weight:300;color:white;letter-spacing:-0.02em;margin-bottom:10px;line-height:1.1;}
+.cap-title em{font-style:italic;color:var(--green-300);}
+.cap-body{font-size:13.5px;font-weight:300;color:rgba(255,255,255,0.68);line-height:1.65;margin-bottom:22px;}
+.cap-steps{display:flex;flex-direction:column;gap:10px;}
+.cap-step{display:flex;gap:12px;align-items:flex-start;}
+.cap-sn{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.14);color:rgba(255,255,255,0.8);font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.cap-st{font-size:13px;font-weight:300;color:rgba(255,255,255,0.7);line-height:1.5;}
+
+/* ═══ CALCULATOR ═══ */
+.sec-calc{background:var(--sand-200);}
+.calc-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:52px;align-items:start;}
+
+.calc-panel{background:var(--white);border:1px solid var(--rule);border-radius:22px;padding:36px 32px;}
+.calc-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:30px;}
+.calc-tab{background:var(--sand-100);border:1.5px solid var(--rule);border-radius:12px;padding:10px 8px;text-align:center;cursor:pointer;font-family:var(--sans);transition:all 0.2s;}
+.calc-tab .ct-name{font-size:13px;font-weight:500;color:var(--ink);display:block;}
+.calc-tab .ct-size{font-size:10px;color:var(--muted);display:block;margin-top:1px;}
+.calc-tab.active{background:var(--green-700);border-color:transparent;}
+.calc-tab.active .ct-name{color:white;}
+.calc-tab.active .ct-size{color:rgba(255,255,255,0.6);}
+
+.cf{margin-bottom:22px;}
+.cf-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;}
+.cf-label{font-size:13px;font-weight:500;color:var(--ink);}
+.cf-inc{font-size:11px;color:var(--muted);}
+.cf-inc span{font-weight:500;color:var(--green-600);}
+.sw{display:flex;align-items:center;gap:12px;}
+input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:5px;border-radius:5px;outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--green-600);cursor:pointer;box-shadow:0 2px 8px rgba(55,107,49,0.3);transition:transform 0.15s;}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15);}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--green-600);cursor:pointer;border:none;}
+.sv{font-family:var(--serif);font-size:19px;font-weight:300;color:var(--ink);min-width:60px;text-align:right;line-height:1;}
+.sv.over{color:#c0392b;}
+.ol{display:flex;justify-content:space-between;font-size:11px;margin-top:4px;min-height:15px;}
+.ol-lbl{color:var(--muted);}
+.ol-cost{color:#c0392b;font-weight:500;}
+.ol-ok{color:var(--green-600);}
+
+.rcard{background:var(--white);border:1px solid var(--rule);border-radius:22px;overflow:hidden;box-shadow:0 8px 52px rgba(0,0,0,0.09);}
+.rcard-sticky{position:sticky;top:80px;}
+.rtop{background:var(--green-700);padding:28px 30px 24px;}
+.rtag{font-size:10.5px;font-weight:500;letter-spacing:0.09em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px;}
+.rlbl{font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:4px;}
+.rtotal{font-family:var(--serif);font-size:58px;font-weight:300;letter-spacing:-0.03em;color:white;line-height:1;}
+.runit{font-size:12px;color:rgba(255,255,255,0.45);margin-top:4px;}
+.rbody{padding:20px 26px;}
+.rrow{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--sand-200);font-size:13px;}
+.rrow:last-child{border-bottom:none;}
+.rrl{color:var(--mid);font-weight:300;}
+.rrv{font-weight:500;color:var(--ink);}
+.rrv.grn{color:var(--green-600);}
+.rrv.red{color:#c0392b;}
+.rrv.dim{color:var(--muted);font-weight:300;font-size:12px;}
+.rtrow{border-top:2px solid var(--sand-300)!important;margin-top:4px;padding-top:12px!important;}
+.rtrow .rrl{font-weight:500;color:var(--ink);}
+.rtrow .rrv{font-size:16px;}
+
+.cap-box{border-top:1px solid var(--sand-200);padding:18px 26px 22px;}
+.cb-label{font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:3px;}
+.cb-desc{font-size:11.5px;color:var(--muted);margin-bottom:11px;line-height:1.5;}
+.cb-row{display:flex;gap:8px;align-items:center;}
+.cb-input{flex:1;padding:10px 14px;border:1.5px solid var(--rule);border-radius:12px;font-family:var(--sans);font-size:14px;color:var(--ink);background:var(--sand-100);outline:none;transition:border-color 0.18s;}
+.cb-input:focus{border-color:var(--green-500);}
+.cb-unit{font-size:13px;color:var(--mid);}
+.cb-status{margin-top:9px;font-size:12px;line-height:1.5;display:none;}
+.cb-status.show{display:block;}
+.cb-status.ok{color:var(--green-600);}
+.cb-status.warn{color:#c0392b;}
+.impl-note{background:var(--sand-100);border-radius:12px;padding:13px 16px;margin:0 26px 22px;font-size:12px;color:var(--mid);line-height:1.6;}
+.impl-note strong{color:var(--ink);font-weight:500;}
+
+/* ═══ ONBOARDING ═══ */
+.sec-ob{background:var(--sand-200);}
+.ob-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:52px;}
+.ob-card{background:var(--white);border:1px solid var(--rule);border-radius:20px;padding:26px 22px;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.ob-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:20px 20px 0 0;}
+.ob-t1::after{background:linear-gradient(90deg,#AECFA8,#7DAF76);}
+.ob-t2::after{background:linear-gradient(90deg,#7DAF76,#4F8B48);}
+.ob-t3::after{background:linear-gradient(90deg,#4F8B48,#376B31);}
+.ob-t4::after{background:linear-gradient(90deg,#376B31,#275226);}
+.ob-plan{font-size:10px;font-weight:500;letter-spacing:0.09em;text-transform:uppercase;color:var(--green-600);margin-bottom:4px;}
+.ob-name{font-family:var(--serif);font-size:21px;font-weight:400;color:var(--ink);margin-bottom:16px;}
+.ob-items{list-style:none;flex:1;}
+.ob-item{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--sand-200);font-size:12.5px;font-weight:300;color:var(--mid);line-height:1.4;}
+.ob-item:last-child{border-bottom:none;}
+.ob-chk{color:var(--green-500);flex-shrink:0;margin-top:1px;}
+.ob-dur{display:inline-block;margin-top:14px;font-size:10.5px;font-weight:500;background:var(--green-100);color:var(--green-700);padding:3px 10px;border-radius:100px;}
+
+/* ═══ PILOT ═══ */
+.sec-pilot{background:var(--white);}
+.pilot-layout{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-top:52px;}
+.pilot-card{border-radius:26px;overflow:hidden;box-shadow:0 8px 48px rgba(0,0,0,0.09);}
+.pilot-top{background:var(--green-700);padding:34px 38px;}
+.pilot-lbl{font-size:10.5px;letter-spacing:0.09em;text-transform:uppercase;color:rgba(255,255,255,0.52);margin-bottom:6px;}
+.pilot-price{font-family:var(--serif);font-size:60px;font-weight:300;letter-spacing:-0.03em;line-height:1;color:white;}
+.pilot-note{font-size:12.5px;color:rgba(255,255,255,0.56);margin-top:6px;}
+.pilot-body{background:var(--white);padding:28px 38px;}
+.pilot-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--sand-200);font-size:13.5px;}
+.pilot-row:last-child{border-bottom:none;}
+.pilot-rl{color:var(--mid);font-weight:300;}
+.pilot-rv{font-weight:500;}
+.pilot-points{display:flex;flex-direction:column;}
+.ppt{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--sand-300);}
+.ppt:last-child{border-bottom:none;}
+.ppt-ico{width:36px;height:36px;border-radius:10px;background:var(--green-100);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ppt-title{font-size:13.5px;font-weight:500;color:var(--ink);margin-bottom:2px;}
+.ppt-desc{font-size:12.5px;font-weight:300;color:var(--mid);line-height:1.56;}
+
+/* ═══ FAQ ═══ */
+.sec-faq{background:var(--sand-200);}
+.faq-center{text-align:center;margin-bottom:48px;}
+.faq-center .eyebrow{justify-content:center;}
+.faq-list{max-width:700px;margin:0 auto;}
+.faq-item{border-bottom:1px solid var(--rule);}
+.faq-trigger{width:100%;background:none;border:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0;font-family:var(--sans);font-size:14.5px;font-weight:500;color:var(--ink);text-align:left;transition:color 0.18s;}
+.faq-trigger:hover{color:var(--green-600);}
+.faq-icon{width:28px;height:28px;border-radius:50%;flex-shrink:0;background:var(--sand-300);color:var(--mid);display:flex;align-items:center;justify-content:center;font-size:16px;transition:background 0.28s,color 0.28s,transform 0.32s var(--ease);}
+.faq-item.is-open .faq-icon{background:var(--green-600);color:white;transform:rotate(45deg);}
+.faq-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.38s var(--ease);}
+.faq-item.is-open .faq-body{grid-template-rows:1fr;}
+.faq-body-inner{overflow:hidden;}
+.faq-answer{padding-bottom:20px;font-size:14px;font-weight:300;line-height:1.72;color:var(--mid);}
+
+/* ═══ CTA ═══ */
+.sec-cta{background:var(--green-700);padding:96px 24px;text-align:center;position:relative;overflow:hidden;}
+.sec-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 50% 50%,rgba(94,138,88,0.36) 0%,transparent 70%);pointer-events:none;}
+.cta-inner{position:relative;z-index:1;}
+.cta-k{font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.52);margin-bottom:22px;}
+.cta-h{font-family:var(--serif);font-size:clamp(42px,6vw,68px);font-weight:300;letter-spacing:-0.02em;line-height:1.05;color:white;margin-bottom:16px;}
+.cta-h em{font-style:italic;color:var(--green-300);}
+.cta-d{font-size:16px;font-weight:300;color:rgba(255,255,255,0.62);margin-bottom:40px;}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-w{font-family:var(--sans);font-size:14px;font-weight:500;padding:15px 36px;border-radius:100px;background:white;color:var(--green-700);text-decoration:none;transition:transform 0.15s,box-shadow 0.18s;}
+.btn-w:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,0.18);}
+.btn-g{font-family:var(--sans);font-size:14px;font-weight:400;padding:15px 36px;border-radius:100px;background:rgba(255,255,255,0.1);color:white;text-decoration:none;border:1px solid rgba(255,255,255,0.24);transition:background 0.18s;}
+.btn-g:hover{background:rgba(255,255,255,0.17);}
+.cta-contacts{margin-top:44px;display:flex;gap:36px;justify-content:center;flex-wrap:wrap;}
+.cta-ci{font-size:13px;color:rgba(255,255,255,0.48);}
+.cta-ci a{color:rgba(255,255,255,0.78);text-decoration:none;}
+
+footer{background:var(--warm-900);padding:36px 52px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+.footer-logo{font-family:var(--serif);font-size:20px;color:rgba(255,255,255,0.62);}
+.footer-copy{font-size:11.5px;color:rgba(255,255,255,0.28);}
+.footer-links{display:flex;gap:24px;}
+.footer-links a{font-size:11.5px;color:rgba(255,255,255,0.34);text-decoration:none;transition:color 0.18s;}
+.footer-links a:hover{color:rgba(255,255,255,0.65);}
+
+@media(max-width:1060px){
+  .plans-grid{grid-template-columns:repeat(2,1fr);}
+  .calc-layout,.aipoeng-layout,.ov-layout{grid-template-columns:1fr;gap:36px;}
+  .rcard-sticky{position:static;}
+  .ob-grid{grid-template-columns:repeat(2,1fr);}
+  .solo-card{grid-template-columns:1fr;gap:28px;}
+  .pilot-layout{grid-template-columns:1fr;}
+  .nav{padding:0 24px;}
+  .nav-links{display:none;}
+}
+@media(max-width:640px){
+  .plans-grid{grid-template-columns:1fr;}
+  .calc-tabs{grid-template-columns:repeat(2,1fr);}
+  .ob-grid{grid-template-columns:1fr;}
+  section{padding:80px 18px;}
+  footer{padding:28px 20px;flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo">Opisense</a>
+  <ul class="nav-links">
+    <li><a href="#planer">Planer</a></li>
+    <li><a href="#aipoeng">AI-poeng</a></li>
+    <li><a href="#kalkulator">Kalkulator</a></li>
+    <li><a href="#onboarding">Onboarding</a></li>
+    <li><a href="#pilot">Pilot</a></li>
+  </ul>
+  <a href="#kontakt" class="nav-btn">Ta kontakt</a>
+</nav>
+
+<!-- ════ PLANS ════ -->
+<section class="sec-plans" id="planer">
+  <div class="wrap">
+    <div class="eyebrow">Abonnement 2025</div>
+    <h2 class="section-title">Velg riktig <em>utgangspunkt</em></h2>
+    <p class="section-lead">Alle pakker inkluderer en fast kvote per måned. Overforbruk faktureres automatisk — du setter en grense i dashbordet slik at du alltid har kontroll.</p>
+
+    <!-- SOLO -->
+    <div class="solo-card">
+      <div>
+        <div class="solo-kicker">Enkeltperson · Self-serve</div>
+        <div class="solo-name">Solo</div>
+        <div class="solo-tag">For konsulenter, rådgivere og selvstendig næringsdrivende som vil jobbe smartere.</div>
+      </div>
+      <div class="solo-price-col">
+        <div class="solo-price">799</div>
+        <div class="solo-unit">kr / måned eks. mva</div>
+        <div class="solo-impl">Ingen implementeringskostnad</div>
+        <div class="solo-value">≈ 200 kr / uke</div>
+      </div>
+      <ul class="solo-quotas">
+        <li class="solo-q"><span class="solo-ql">Brukere</span><span class="solo-qv">1</span></li>
+        <li class="solo-q"><span class="solo-ql">Møter / mnd</span><span class="solo-qv">10</span></li>
+        <li class="solo-q"><span class="solo-ql">Dokumentsøk (RAG)</span><span class="solo-qv">80</span></li>
+        <li class="solo-q"><span class="solo-ql">AI-agenter</span><span class="solo-qv">Ubegrenset antall</span></li>
+        <li class="solo-q"><span class="solo-ql">AI-poeng / mnd</span><span class="solo-qv">1 500</span></li>
+        <li class="solo-q"><span class="solo-ql">Datalagring</span><span class="solo-qv">10 GB</span></li>
+      </ul>
+    </div>
+
+    <div class="plans-label">Bedriftsplaner</div>
+    <div class="plans-grid">
+
+      <div class="plan-card t1">
+        <div class="plan-size">1 – 15 ansatte</div>
+        <div class="plan-name">Liten</div>
+        <div class="plan-tagline">AI-assistert drift fra dag én</div>
+        <div class="plan-peruser">fra 593 kr / bruker / mnd</div>
+        <div class="plan-price">8 900</div>
+        <div class="plan-unit">kr / måned eks. mva</div>
+        <span class="plan-impl">Impl: 44 900 kr</span>
+        <div class="plan-sep"></div>
+        <ul class="plan-quotas">
+          <li class="plan-q"><span class="plan-ql">Møter / mnd</span><span class="plan-qv">120</span></li>
+          <li class="plan-q"><span class="plan-ql">Dokumentsøk (RAG)</span><span class="plan-qv">600</span></li>
+          <li class="plan-q"><span class="plan-ql">AI-agenter</span><span class="plan-qv">Ubegrenset</span></li>
+          <li class="plan-q"><span class="plan-ql">AI-poeng / mnd</span><span class="plan-qv">20 000</span></li>
+          <li class="plan-q"><span class="plan-ql">Datalagring</span><span class="plan-qv">150 GB</span></li>
+        </ul>
+        <div class="plan-persona">
+          <div class="plan-persona-label">Passer for</div>
+          <div class="plan-persona-text">Advokatfirma, regnskapskontor, liten rådgivningsvirksomhet.</div>
+        </div>
+      </div>
+
+      <div class="plan-card t2">
+        <div class="plan-size">16 – 50 ansatte</div>
+        <div class="plan-name">SMB</div>
+        <div class="plan-tagline">AI på tvers av team og avdelinger</div>
+        <div class="plan-peruser">fra 398 kr / bruker / mnd</div>
+        <div class="plan-price">19 900</div>
+        <div class="plan-unit">kr / måned eks. mva</div>
+        <span class="plan-impl">Impl: 89 900 kr</span>
+        <div class="plan-sep"></div>
+        <ul class="plan-quotas">
+          <li class="plan-q"><span class="plan-ql">Møter / mnd</span><span class="plan-qv">400</span></li>
+          <li class="plan-q"><span class="plan-ql">Dokumentsøk (RAG)</span><span class="plan-qv">2 500</span></li>
+          <li class="plan-q"><span class="plan-ql">AI-agenter</span><span class="plan-qv">Ubegrenset</span></li>
+          <li class="plan-q"><span class="plan-ql">AI-poeng / mnd</span><span class="plan-qv">40 000</span></li>
+          <li class="plan-q"><span class="plan-ql">Datalagring</span><span class="plan-qv">300 GB</span></li>
+        </ul>
+        <div class="plan-persona">
+          <div class="plan-persona-label">Passer for</div>
+          <div class="plan-persona-text">Konsulentselskap, prosjektbasert virksomhet, voksende SMB.</div>
+        </div>
+      </div>
+
+      <div class="plan-card t3">
+        <div class="plan-size">51 – 150 ansatte</div>
+        <div class="plan-name">Mellomstor</div>
+        <div class="plan-tagline">Full AI-integrasjon på virksomhetsnivå</div>
+        <div class="plan-peruser">fra 333 kr / bruker / mnd</div>
+        <div class="plan-price">49 900</div>
+        <div class="plan-unit">kr / måned eks. mva</div>
+        <span class="plan-impl">Impl: 154 900 kr</span>
+        <div class="plan-sep"></div>
+        <ul class="plan-quotas">
+          <li class="plan-q"><span class="plan-ql">Møter / mnd</span><span class="plan-qv">900</span></li>
+          <li class="plan-q"><span class="plan-ql">Dokumentsøk (RAG)</span><span class="plan-qv">5 000</span></li>
+          <li class="plan-q"><span class="plan-ql">AI-agenter</span><span class="plan-qv">Ubegrenset</span></li>
+          <li class="plan-q"><span class="plan-ql">AI-poeng / mnd</span><span class="plan-qv">80 000</span></li>
+          <li class="plan-q"><span class="plan-ql">Datalagring</span><span class="plan-qv">1 TB</span></li>
+        </ul>
+        <div class="plan-persona">
+          <div class="plan-persona-label">Passer for</div>
+          <div class="plan-persona-text">Byggefirma, ingeniørselskap, etablert SMB med avdelingsvis automatisering.</div>
+        </div>
+      </div>
+
+      <div class="plan-card t4">
+        <div class="plan-size">151 – 500 ansatte</div>
+        <div class="plan-name">Stor organisasjon</div>
+        <div class="plan-tagline">Enterprise-kapasitet med DPIA og compliance</div>
+        <div class="plan-peruser">fra 220 kr / bruker / mnd</div>
+        <div class="plan-price">109 900</div>
+        <div class="plan-unit">kr / måned eks. mva</div>
+        <span class="plan-impl">Impl: 299 900 kr</span>
+        <div class="plan-sep"></div>
+        <ul class="plan-quotas">
+          <li class="plan-q"><span class="plan-ql">Møter / mnd</span><span class="plan-qv">2 000</span></li>
+          <li class="plan-q"><span class="plan-ql">Dokumentsøk (RAG)</span><span class="plan-qv">12 000</span></li>
+          <li class="plan-q"><span class="plan-ql">AI-agenter</span><span class="plan-qv">Ubegrenset</span></li>
+          <li class="plan-q"><span class="plan-ql">AI-poeng / mnd</span><span class="plan-qv">150 000</span></li>
+          <li class="plan-q"><span class="plan-ql">Datalagring</span><span class="plan-qv">5 TB</span></li>
+        </ul>
+        <div class="plan-persona">
+          <div class="plan-persona-label">Passer for</div>
+          <div class="plan-persona-text">Kommune, fylke eller stor privat virksomhet med behov for DPIA og dedikert team.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="enterprise-bar">
+      <div>
+        <div class="ebar-title">500+ ansatte — Konsern / Enterprise</div>
+        <div class="ebar-desc">Ubegrenset kapasitet · Dedikert miljø · Skreddersydd compliance · Implementering fra 249 900 kr</div>
+      </div>
+      <a href="#kontakt" class="ebar-btn">Ta kontakt →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════ AI-POENG ════ -->
+<section class="sec-aipoeng" id="aipoeng">
+  <div class="wrap">
+    <div class="eyebrow">AI-poeng forklart</div>
+    <h2 class="section-title">Ubegrenset antall agenter — <em>kontroll på aktiviteten</em></h2>
+    <p class="section-lead">Du betaler ikke for antall agenter. Du betaler for hva de faktisk gjør. AI-poeng er vår måte å måle agentaktivitet på tvers av alle oppgaver og modeller.</p>
+
+    <div class="aipoeng-layout">
+      <div class="apc">
+        <div class="apc-kicker">Hva er AI-poeng?</div>
+        <div class="apc-title">Regnekraft,<br>ikke <em>antall</em></div>
+        <div class="apc-body">Når en AI-agent analyserer et dokument, skriver en rapport eller koordinerer en prosess, bruker den regnekraft. AI-poeng måler dette forbruket på en forutsigbar måte — uavhengig av om agenten bruker en rask Haiku-modell for enkle oppgaver eller en tyngre modell for kompleks analyse.</div>
+        <div class="apc-def">
+          <div class="apc-def-label">Definisjon</div>
+          <div class="apc-def-text"><strong style="color:white;">1 AI-poeng = 1 000 tokens.</strong> Tokens er den minste enheten AI-modeller behandler tekst i. En typisk setning bruker 15–20 tokens. En hel rapport bruker kanskje 3 000–10 000 tokens — tilsvarende 3–10 poeng.</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="ape-list">
+          <div class="ape-card">
+            <div>
+              <div class="ape-tag">Enkelt · Haiku-modell</div>
+              <div class="ape-action">Kort AI-spørsmål eller statusoppdatering</div>
+              <div class="ape-desc">Spørsmål med kort kontekst og raskt svar</div>
+            </div>
+            <div class="ape-right">
+              <div class="ape-poeng">1–3</div>
+              <div class="ape-unit">AI-poeng</div>
+            </div>
+          </div>
+          <div class="ape-card">
+            <div>
+              <div class="ape-tag">Middels · Sonnet-modell</div>
+              <div class="ape-action">Møtereferat og handlingspunkter</div>
+              <div class="ape-desc">Transkripsjon analyseres og struktureres</div>
+            </div>
+            <div class="ape-right">
+              <div class="ape-poeng">10–30</div>
+              <div class="ape-unit">AI-poeng</div>
+            </div>
+          </div>
+          <div class="ape-card">
+            <div>
+              <div class="ape-tag">Daglig agent · Automatisert flyt</div>
+              <div class="ape-action">Daglig rapport eller digest-utsendelse</div>
+              <div class="ape-desc">Agent kjøres automatisk hvert virkedøgn</div>
+            </div>
+            <div class="ape-right">
+              <div class="ape-poeng">20–60</div>
+              <div class="ape-unit">per kjøring</div>
+            </div>
+          </div>
+          <div class="ape-card">
+            <div>
+              <div class="ape-tag">Tung analyse · Opus-nivå</div>
+              <div class="ape-action">Juridisk analyse, kontraktgjennomgang</div>
+              <div class="ape-desc">Kompleks flertrinnsprosess med lang kontekst</div>
+            </div>
+            <div class="ape-right">
+              <div class="ape-poeng">80–300</div>
+              <div class="ape-unit">AI-poeng</div>
+            </div>
+          </div>
+        </div>
+        <div class="aip-note">
+          <strong>Eksempel — SMB med 35 ansatte (40 000 poeng/mnd):</strong> Tilsvarer ca. 5 daglige agenter som hver kjøres 22 virkedager (110 kjøringer × 30 poeng ≈ 3 300 poeng), pluss 200 møtereferater (200 × 20 = 4 000 poeng), pluss daglig bruk for 35 ansatte — med god margin til overs. Dashbordet viser forbruk per agent, per bruker og per dag i sanntid.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ OVERUSE ════ -->
+<section class="sec-overuse" id="overforbruk">
+  <div class="wrap">
+    <div class="eyebrow">Overforbruk</div>
+    <h2 class="section-title">Travle måneder koster <em>litt mer — ikke mye mer</em></h2>
+
+    <div class="ov-layout">
+      <div>
+        <div class="ov-text">
+          <p>Overforbruksprisene er satt til å gi fleksibilitet i perioder med høyere aktivitet — uten at en travel måned gjør vondt. Du trenger aldri å gjøre noe manuelt: alt registreres og faktureres ved månedsslutt.</p>
+        </div>
+        <table class="ov-table">
+          <thead><tr><th>Tjeneste</th><th>Overbrukspris</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>Møter</strong>
+                <div class="ov-note-cell">Inntil 60 min = 1 enhet. Møter 61–120 min = 2 enheter. Inkluderer transkripsjon og AI-referat.</div>
+              </td>
+              <td><span class="ov-pill">29 kr / møte</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong>AI-poeng</strong>
+                <div class="ov-note-cell">Dekker all AI-aktivitet: spørsmål, chat, dokumentanalyse, agentflyter og bakgrunnsoperasjoner. 1 poeng = 1 000 tokens.</div>
+              </td>
+              <td><span class="ov-pill">0,50 kr / poeng</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Dokumentsøk (RAG)</strong>
+                <div class="ov-note-cell">Dedikert søk mot opplastede filer, kontrakter, prosedyrer og interne kunnskapsbaser.</div>
+              </td>
+              <td><span class="ov-pill">2 kr / søk</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Ekstra datalagring</strong>
+                <div class="ov-note-cell">Utover inkludert lagring. Et 60-min møte med opptak bruker typisk 200–400 MB.</div>
+              </td>
+              <td><span class="ov-pill">0,49 kr / GB</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cap-callout">
+        <div class="cap-title">Du har alltid<br><em>full kontroll</em></div>
+        <div class="cap-body">Sett en øvre grense for månedlig overforbruk — da trenger du aldri tenke på dette. Vi varsler deg proaktivt og stopper automatisk ved grensen.</div>
+        <div class="cap-steps">
+          <div class="cap-step"><div class="cap-sn">1</div><div class="cap-st">Sett maksimumsbeløp for overforbruk i dashbordet</div></div>
+          <div class="cap-step"><div class="cap-sn">2</div><div class="cap-st">Varsel sendes til administrator ved 70 % av grensen</div></div>
+          <div class="cap-step"><div class="cap-sn">3</div><div class="cap-st">Overforbruk stoppes automatisk — tjenesten fortsetter normalt innenfor kvoten</div></div>
+          <div class="cap-step"><div class="cap-sn">4</div><div class="cap-st">Juster grensen enkelt når som helst</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ CALCULATOR ════ -->
+<section class="sec-calc" id="kalkulator">
+  <div class="wrap">
+    <div class="eyebrow">Priskalkulator</div>
+    <h2 class="section-title">Beregn din <em>estimerte månedskostnad</em></h2>
+    <p class="section-lead">Velg plan og juster forventet bruk. Prisen er uendret innenfor pakken — overskridelser vises i rødt i sanntid.</p>
+
+    <div class="calc-layout">
+      <div class="calc-panel">
+        <div class="calc-tabs">
+          <div class="calc-tab" data-plan="liten" onclick="selP('liten',this)">
+            <span class="ct-name">Liten</span><span class="ct-size">1–15 ansatte</span>
+          </div>
+          <div class="calc-tab active" data-plan="smb" onclick="selP('smb',this)">
+            <span class="ct-name">SMB</span><span class="ct-size">16–50 ansatte</span>
+          </div>
+          <div class="calc-tab" data-plan="mellom" onclick="selP('mellom',this)">
+            <span class="ct-name">Mellomstor</span><span class="ct-size">51–150 ansatte</span>
+          </div>
+          <div class="calc-tab" data-plan="stor" onclick="selP('stor',this)">
+            <span class="ct-name">Stor org.</span><span class="ct-size">151–500 ansatte</span>
+          </div>
+          <div class="calc-tab" data-plan="konsern" onclick="selP('konsern',this)">
+            <span class="ct-name">Konsern</span><span class="ct-size">500+</span>
+          </div>
+        </div>
+
+        <div class="cf">
+          <div class="cf-top"><label class="cf-label">Møter per måned</label><span class="cf-inc">Inkludert: <span id="im">400</span></span></div>
+          <div class="sw"><input type="range" id="sl-m" min="0" max="1200" value="200" oninput="calc()"><span class="sv" id="vm">200</span></div>
+          <div class="ol"><span class="ol-lbl" id="lm"></span><span id="cm" class="ol-ok">Inkludert</span></div>
+        </div>
+
+        <div class="cf">
+          <div class="cf-top"><label class="cf-label">Dokumentsøk (RAG) per måned</label><span class="cf-inc">Inkludert: <span id="ir">2 500</span></span></div>
+          <div class="sw"><input type="range" id="sl-r" min="0" max="8000" value="1200" step="50" oninput="calc()"><span class="sv" id="vr">1 200</span></div>
+          <div class="ol"><span class="ol-lbl" id="lr"></span><span id="cr_" class="ol-ok">Inkludert</span></div>
+        </div>
+
+        <div class="cf">
+          <div class="cf-top"><label class="cf-label">AI-poeng per måned</label><span class="cf-inc">Inkludert: <span id="ip">40 000</span></span></div>
+          <div class="sw"><input type="range" id="sl-p" min="0" max="120000" value="20000" step="1000" oninput="calc()"><span class="sv" id="vp">20 000</span></div>
+          <div class="ol"><span class="ol-lbl" id="lp"></span><span id="cp" class="ol-ok">Inkludert</span></div>
+        </div>
+
+        <div class="cf">
+          <div class="cf-top"><label class="cf-label">Datalagring</label><span class="cf-inc">Inkludert: <span id="is_">300 GB</span></span></div>
+          <div class="sw"><input type="range" id="sl-s" min="0" max="1200" value="150" step="10" oninput="calc()"><span class="sv" id="vs">150 GB</span></div>
+          <div class="ol"><span class="ol-lbl" id="ls"></span><span id="cs" class="ol-ok">Inkludert</span></div>
+        </div>
+      </div>
+
+      <div class="rcard-sticky">
+        <div class="rcard">
+          <div class="rtop">
+            <div class="rtag" id="rtag">SMB · 16–50 ansatte</div>
+            <div class="rlbl">Estimert månedskostnad</div>
+            <div class="rtotal" id="rtotal">19 900</div>
+            <div class="runit">kr / måned eks. mva</div>
+          </div>
+          <div class="rbody">
+            <div class="rrow"><span class="rrl">Abonnement</span><span class="rrv" id="rsub">19 900 kr</span></div>
+            <div class="rrow"><span class="rrl">Møter</span><span class="rrv grn" id="rm">200 møter</span></div>
+            <div class="rrow"><span class="rrl">Dokumentsøk</span><span class="rrv grn" id="rr">1 200 søk</span></div>
+            <div class="rrow"><span class="rrl">AI-poeng</span><span class="rrv grn" id="rp">20 000 poeng</span></div>
+            <div class="rrow"><span class="rrl">Lagring</span><span class="rrv grn" id="rs">150 GB</span></div>
+            <div class="rrow rtrow"><span class="rrl">Estimert total</span><span class="rrv" id="rtot" style="font-size:16px;">19 900 kr</span></div>
+          </div>
+          <div class="cap-box">
+            <div class="cb-label">Betalingsgrense overforbruk (valgfri)</div>
+            <div class="cb-desc">Maksimalt beløp per måned utover abonnementet. Vi varsler og stopper automatisk.</div>
+            <div class="cb-row">
+              <input type="number" class="cb-input" id="cap-in" placeholder="F.eks. 5 000" oninput="chkCap()">
+              <span class="cb-unit">kr / mnd</span>
+            </div>
+            <div class="cb-status" id="cap-st"></div>
+          </div>
+          <div class="impl-note"><strong>Implementering:</strong> <span id="rimpl">89 900 kr</span> — engangsbeløp ved oppstart, faktureres separat.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ ONBOARDING ════ -->
+<section class="sec-ob" id="onboarding">
+  <div class="wrap">
+    <div class="eyebrow">Onboarding</div>
+    <h2 class="section-title">Vi følger deg <em>fra dag én</em></h2>
+    <p class="section-lead">Implementeringskostnaden dekker et strukturert innføringsløp der vi kobler oss på systemene dere allerede bruker, setter opp agenter og sikrer at teamet er trygt med plattformen.</p>
+
+    <div class="ob-grid">
+      <div class="ob-card ob-t1">
+        <div class="ob-plan">Liten · 1–15 ansatte</div>
+        <div class="ob-name">Komme i gang</div>
+        <ul class="ob-items">
+          <li class="ob-item"><span class="ob-chk">✓</span>Digital oppstartsøkt — gjennomgang og konfigurasjon</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Kobling mot M365 eller Google Workspace</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Oppsett av grunnleggende agenter og maler</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Kurs for nøkkelbrukere (2–3 timer praktisk)</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Oppfølgingsøkt etter 30 dager</li>
+        </ul>
+        <span class="ob-dur">Ca. 2–3 uker</span>
+      </div>
+
+      <div class="ob-card ob-t2">
+        <div class="ob-plan">SMB · 16–50 ansatte</div>
+        <div class="ob-name">Veiledet oppstart</div>
+        <ul class="ob-items">
+          <li class="ob-item"><span class="ob-chk">✓</span>Alt i Komme i gang</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Dedikert kontaktperson under hele innføringen</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Oppsett av agenter og flyter tilpasset virksomheten</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Integrasjon mot CRM eller ett fagsystem</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Opplæring for team og administratorer</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Oppfølging etter 30 og 60 dager</li>
+        </ul>
+        <span class="ob-dur">Ca. 4–5 uker</span>
+      </div>
+
+      <div class="ob-card ob-t3">
+        <div class="ob-plan">Mellomstor · 51–150 ansatte</div>
+        <div class="ob-name">Tilpasset implementering</div>
+        <ul class="ob-items">
+          <li class="ob-item"><span class="ob-chk">✓</span>Alt i Veiledet oppstart</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Behovsgjennomgang på avdelingsnivå</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Opptil 3 systemintegrasjoner</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Opplæring fordelt på team, roller og avdelinger</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Månedlig oppfølging første halvår</li>
+        </ul>
+        <span class="ob-dur">5–7 uker</span>
+      </div>
+
+      <div class="ob-card ob-t4">
+        <div class="ob-plan">Stor org. · 151–500 ansatte</div>
+        <div class="ob-name">Enterprise-innføring</div>
+        <ul class="ob-items">
+          <li class="ob-item"><span class="ob-chk">✓</span>Alt i Tilpasset implementering</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Dedikert Customer Success Manager</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Virksomhetsomfattende implementeringsplan</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>Opptil 6 integrasjoner og train-the-trainer</li>
+          <li class="ob-item"><span class="ob-chk">✓</span>6 måneders tett oppfølging med statusrapporter</li>
+        </ul>
+        <span class="ob-dur">8–12 uker</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ PILOT ════ -->
+<section class="sec-pilot" id="pilot">
+  <div class="wrap">
+    <div class="eyebrow">Pilotprogram · Inntil 50 ansatte</div>
+    <h2 class="section-title">En måned for å se <em>hva AI gjør for dere</em></h2>
+    <p class="section-lead">En strukturert én-måneders oppstart med inkludert implementering og felles løsningsutvikling — tilpasset nettopp din virksomhet. Etter piloten vet dere nøyaktig hva dere trenger.</p>
+
+    <div style="background:var(--sand-200);border:1px solid var(--rule);border-radius:14px;padding:14px 20px;margin-bottom:36px;display:flex;align-items:center;gap:14px;max-width:640px;">
+      <span style="font-size:18px;">⏱</span>
+      <span style="font-size:13px;color:var(--mid);font-weight:300;">Tidsbegrenset tilbud — tilgjengelig frem til <strong style="color:var(--ink);">juni 2026</strong>. Maks <strong style="color:var(--ink);">50 ansatte</strong>.</span>
+    </div>
+
+    <div class="pilot-layout">
+      <div class="pilot-card">
+        <div class="pilot-top">
+          <div class="pilot-lbl">Fast totalpris · 1 måned inkl. oppstart</div>
+          <div class="pilot-price">19 900</div>
+          <div class="pilot-note">kr eks. mva · ekstra AI-poeng kan kjøpes ved behov · 15 000 kr i kreditt ved konvertering</div>
+        </div>
+        <div class="pilot-body">
+          <div class="pilot-row"><span class="pilot-rl">Varighet</span><span class="pilot-rv">1 måned (fast)</span></div>
+          <div class="pilot-row"><span class="pilot-rl">Ansatte</span><span class="pilot-rv">Inntil 50</span></div>
+          <div class="pilot-row"><span class="pilot-rl">Møter</span><span class="pilot-rv">100</span></div>
+          <div class="pilot-row"><span class="pilot-rl">AI-poeng</span><span class="pilot-rv">30 000</span></div>
+          <div class="pilot-row"><span class="pilot-rl">Dokumentsøk (RAG)</span><span class="pilot-rv">1 000</span></div>
+          <div class="pilot-row"><span class="pilot-rl">Oppstart inkludert</span><span class="pilot-rv">Ja — 3 sesjoner</span></div>
+          <div class="pilot-row"><span class="pilot-rl">Konverteringskreditt</span><span class="pilot-rv">15 000 kr — mot impl. eller videre hjelp</span></div>
+        </div>
+      </div>
+
+      <div class="pilot-points">
+        <div class="ppt">
+          <div class="ppt-ico">🤝</div>
+          <div>
+            <div class="ppt-title">Vi utvikler løsningene sammen med dere</div>
+            <div class="ppt-desc">Gjennom tre arbeidssesjoner setter vi opp agenter og arbeidsflyter skreddersydd til virksomheten — ikke generiske maler, men løsninger som passer akkurat deres hverdag.</div>
+          </div>
+        </div>
+        <div class="ppt">
+          <div class="ppt-ico">📊</div>
+          <div>
+            <div class="ppt-title">Reelt forbruksmønster på én måned</div>
+            <div class="ppt-desc">Etter piloten vet dere nøyaktig hvilken plan som passer og hva dere faktisk bruker — konverteringssamtalen er datadrevet.</div>
+          </div>
+        </div>
+        <div class="ppt">
+          <div class="ppt-ico">💳</div>
+          <div>
+            <div class="ppt-title">15 000 kr i kreditt ved konvertering</div>
+            <div class="ppt-desc">Signerer dere en løpende avtale innen 30 dager etter piloten, får dere 15 000 kr i kreditt. Dere velger selv — enten trekkes det fra implementeringskostnaden, eller dere bruker det mot videre løsningsutvikling og oppfølging fra Opisense.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FAQ ════ -->
+<section class="sec-faq" id="faq">
+  <div class="wrap">
+    <div class="faq-center">
+      <div class="eyebrow">Spørsmål og svar</div>
+      <h2 class="section-title">Vanlige <em>spørsmål</em></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-trigger">Hva er et AI-spørsmål, konkret?<span class="faq-icon">+</span></button>
+        <div class="faq-body"><div class="faq-body-inner"><p class="faq-answer">Et AI-spørsmål er én forespørsel til AI-assistenten — for eksempel «Hva er statusen på prosjekt X?», «Oppsummer dette dokumentet» eller «Finn kontaktinfo for leverandøren vår». Assistenten svarer ved å søke i interne systemer, på internett, eller begge. Én forespørsel med tilhørende svar teller som ett AI-spørsmål.</p></div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-trigger">Hva koster et typisk møte å prosessere?<span class="faq-icon">+</span></button>
+        <div class="faq-body"><div class="faq-body-inner"><p class="faq-answer">Et 60-minutters møte transkriberes av ElevenLabs Scribe og prosesseres deretter av AI-modellen som genererer referat, handlingspunkter og strukturert oppsummering. Møter innenfor kvoten er inkludert i abonnementet — overskydende møter koster 29 kr per møte. Et møte over 60 minutter teller som 2 enheter.</p></div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-trigger">Er kvotenivåene realistiske — vil vi overskride dem?<span class="faq-icon">+</span></button>
+        <div class="faq-body"><div class="faq-body-inner"><p class="faq-answer">Vi har satt kvoter med god margin. SMB-pakken inkluderer 400 møter per måned — for 50 ansatte tilsvarer det 8 møter per ansatt per måned, eller to per uke. AI-poengkvoten på 40 000 dekker titusener av samtaler, dokumentanalyser og agentoppgaver — langt mer enn typisk normalbruk. Pilotprogrammet gir deg reelt forbruksdata slik at du velger riktig pakke fra start.</p></div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-trigger">Hva skjer hvis vi overskrider kvoten én måned?<span class="faq-icon">+</span></button>
+        <div class="faq-body"><div class="faq-body-inner"><p class="faq-answer">Tjenesten fortsetter uten avbrudd. Overskridelsen registreres automatisk og faktureres ved månedsslutt med transparente linjeposter. Du kan sette en betalingsgrense for overforbruk i dashbordet — da stoppes overforbruk automatisk og du mottar varsel ved 70 % av grensen.</p></div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-trigger">Bruker alle AI-spørsmål AI-poeng?<span class="faq-icon">+</span></button>
+        <div class="faq-body"><div class="faq-body-inner"><p class="faq-answer">AI-spørsmål og AI-poeng er to separate kvotebøtter. AI-spørsmål teller antall henvendelser fra brukere til AI-assistenten. AI-poeng måler agentenes bakgrunnsaktivitet — automatiserte flyter, langvarige prosesser og tung analyse som kjøres uten at en bruker stiller et direkte spørsmål. Et enkelt AI-spørsmål trekker fra spørsmålskvoten, mens en agent som kjører en automatisert daglig rapport trekker fra AI-poengkvoten.</p></div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-trigger">Kan vi oppgradere plan underveis?<span class="faq-icon">+</span></button>
+        <div class="faq-body"><div class="faq-body-inner"><p class="faq-answer">Ja — oppgradering trer i kraft ved neste faktureringsperiode. Nedgradering krever 30 dagers skriftlig varsel. Abonnementspriser i signert avtale er låst for avtalens løpetid. Overforbrukspriser kan justeres én gang per år med 60 dagers varsel.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ CTA ════ -->
+<section class="sec-cta" id="kontakt">
+  <div class="cta-inner">
+    <div class="cta-k">Klar til å starte?</div>
+    <h2 class="cta-h">La oss finne<br>riktig løsning <em>for deg</em></h2>
+    <p class="cta-d">Start med pilotprogrammet — én måned med oss ved siden av, uten risiko. Deretter velger du plan basert på faktisk bruk.</p>
+    <div class="cta-btns">
+      <a href="/cdn-cgi/l/email-protection#a7cfc2cee7c8d7ced4c2c9d4c289c9c8" class="btn-w">Start pilotsamtale</a>
+      <a href="#planer" class="btn-g">Se planer igjen</a>
+    </div>
+    <div class="cta-contacts">
+      <span class="cta-ci">📧 <a href="/cdn-cgi/l/email-protection#177f727e5778677e6472796472397978"><span class="__cf_email__" data-cfemail="18707d71587768716b7d766b7d367677">[email&#160;protected]</span></a></span>
+      <span class="cta-ci">🌐 <a href="#">opisense.no</a></span>
+      <span class="cta-ci">📞 <a href="#">+47 000 00 000</a></span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Opisense</div>
+  <div class="footer-copy">© 2025 Opisense AS · Alle priser ekskl. mva · Versjon 4.0 · Konfidensiell</div>
+  <div class="footer-links"><a href="#">Personvern</a><a href="#">Vilkår</a><a href="#">Kontakt</a></div>
+</footer>
+
+<script>
+var PLANS = {
+  liten:  { n:'Liten',      sz:'1–15 ansatte',    sub:8900,   impl:44900,  m:120,  r:600,   p:20000,  s:150,  mxM:400,  mxR:2000,  mxP:60000,  mxS:600   },
+  smb:    { n:'SMB',        sz:'16–50 ansatte',   sub:19900,  impl:89900,  m:400,  r:2500,  p:40000,  s:300,  mxM:1200, mxR:8000,  mxP:120000, mxS:1200  },
+  mellom: { n:'Mellomstor', sz:'51–150 ansatte',  sub:49900,  impl:154900, m:900,  r:5000,  p:80000,  s:1000, mxM:2500, mxR:15000, mxP:240000, mxS:4000  },
+  stor:   { n:'Stor org.',  sz:'151–500 ansatte', sub:109900, impl:299900, m:2000, r:12000, p:150000, s:5000, mxM:6000, mxR:36000, mxP:450000, mxS:20000 },
+  konsern:{ n:'Konsern',    sz:'500+ ansatte',    sub:null,   impl:249000, m:null, r:null,  p:null,   s:null, mxM:6000, mxR:36000, mxP:450000, mxS:20000 }
+};
+var RATES = { m:29, r:2, p:0.5, s:0.49 };
+var cur = 'smb';
+
+function el(id)   { return document.getElementById(id); }
+function fmt(n)   { return Math.round(n).toLocaleString('no-NO'); }
+function fkr(n)   { return fmt(n) + ' kr'; }
+function fmtGB(g) { return g >= 1000 ? fmt(g/1000) + ' TB' : fmt(g) + ' GB'; }
+
+function setSliderStyle(slEl, val, quota, maxVal) {
+  var over = quota !== null && val > quota;
+  var fillPct = (maxVal > 0) ? Math.min(quota !== null ? quota : val, val) / maxVal * 100 : 0;
+  var vpct    = (maxVal > 0) ? val / maxVal * 100 : 0;
+  slEl.style.background = over
+    ? 'linear-gradient(to right,#AECFA8 0%,#AECFA8 ' + fillPct + '%,#f5c6c1 ' + fillPct + '%,#f5c6c1 100%)'
+    : 'linear-gradient(to right,#4F8B48 0%,#4F8B48 ' + vpct + '%,#E8E3DA ' + vpct + '%,#E8E3DA 100%)';
+}
+
+function setOvLine(lblId, costId, ov, cost, unit) {
+  var lbl = el(lblId), ce = el(costId);
+  if (ov > 0) { lbl.textContent = '+' + fmt(ov) + ' ' + unit + ' over kvote'; ce.textContent = '+ ' + fkr(cost); ce.className = 'ol-cost'; }
+  else        { lbl.textContent = ''; ce.textContent = 'Inkludert'; ce.className = 'ol-ok'; }
+}
+
+function setResRow(id, cost) {
+  var e = el(id);
+  if (cost > 0) { e.textContent = '+ ' + fkr(cost); e.className = 'rrv red'; }
+  else          { e.textContent = 'Inkludert'; e.className = 'rrv grn'; }
+}
+
+function setResRowVal(id, val, displayVal, cost) {
+  var e = el(id);
+  if (cost > 0) { e.textContent = '+ ' + fkr(cost); e.className = 'rrv red'; }
+  else          { e.textContent = displayVal; e.className = 'rrv grn'; }
+}
+
+function selP(key, tabEl) {
+  cur = key;
+  document.querySelectorAll('.calc-tab').forEach(function(t) { t.classList.remove('active'); });
+  tabEl.classList.add('active');
+  var p = PLANS[key];
+  el('sl-m').max = p.mxM; el('sl-r').max = p.mxR; el('sl-p').max = p.mxP; el('sl-s').max = p.mxS;
+  el('sl-m').value = p.m ? Math.min(Math.round(p.m * 0.5), p.mxM) : 0;
+  el('sl-r').value = p.r ? Math.min(Math.round(p.r * 0.5), p.mxR) : 0;
+  el('sl-p').value = p.p ? Math.min(Math.round(p.p * 0.5), p.mxP) : 0;
+  el('sl-s').value = p.s ? Math.min(Math.round(p.s * 0.5), p.mxS) : 0;
+  el('im').textContent  = p.m ? fmt(p.m)   : '—';
+  el('ir').textContent  = p.r ? fmt(p.r)   : '—';
+  el('ip').textContent  = p.p ? fmt(p.p)   : '—';
+  el('is_').textContent = p.s ? fmtGB(p.s) : '—';
+  if (!p.sub) {
+    el('rtag').textContent = p.n + ' · ' + p.sz;
+    el('rtotal').textContent = 'Etter avtale';
+    el('rsub').textContent   = 'Etter avtale';
+    el('rtot').textContent   = 'Etter avtale';
+    ['rm','rr','rp','rs'].forEach(function(id) { el(id).textContent = '—'; el(id).className = 'rrv dim'; });
+    el('rimpl').textContent = 'Fra 249 000 kr';
+    return;
+  }
+  calc();
+}
+
+function calc() {
+  var p = PLANS[cur];
+  if (!p.sub) return;
+  var mv = parseFloat(el('sl-m').value) || 0;
+  var rv = parseFloat(el('sl-r').value) || 0;
+  var pv = parseFloat(el('sl-p').value) || 0;
+  var sv = parseFloat(el('sl-s').value) || 0;
+  el('vm').textContent = fmt(mv); el('vr').textContent = fmt(rv);
+  el('vp').textContent = fmt(pv); el('vs').textContent = fmtGB(sv);
+  el('vm').className = 'sv' + (mv > p.m ? ' over' : '');
+  el('vr').className = 'sv' + (rv > p.r ? ' over' : '');
+  el('vp').className = 'sv' + (pv > p.p ? ' over' : '');
+  el('vs').className = 'sv' + (sv > p.s ? ' over' : '');
+  setSliderStyle(el('sl-m'), mv, p.m, parseFloat(el('sl-m').max));
+  setSliderStyle(el('sl-r'), rv, p.r, parseFloat(el('sl-r').max));
+  setSliderStyle(el('sl-p'), pv, p.p, parseFloat(el('sl-p').max));
+  setSliderStyle(el('sl-s'), sv, p.s, parseFloat(el('sl-s').max));
+  var om = Math.max(0, mv - p.m), cm = om * RATES.m;
+  var or = Math.max(0, rv - p.r), cr = or * RATES.r;
+  var op = Math.max(0, pv - p.p), cp = op * RATES.p;
+  var os = Math.max(0, sv - p.s), cs = os * RATES.s;
+  setOvLine('lm','cm',om,cm,'møter');
+  setOvLine('lr','cr_',or,cr,'søk');
+  setOvLine('lp','cp',op,cp,'poeng');
+  setOvLine('ls','cs',os,cs,'GB');
+  var tot = p.sub + cm + cr + cp + cs;
+  el('rtag').textContent   = p.n + ' · ' + p.sz;
+  el('rtotal').textContent = fmt(tot);
+  el('rsub').textContent   = fkr(p.sub);
+  el('rtot').textContent   = fkr(tot);
+  el('rimpl').textContent  = fkr(p.impl);
+  setResRowVal('rm', mv, fmt(mv) + ' møter',   cm);
+  setResRowVal('rr', rv, fmt(rv) + ' søk',     cr);
+  setResRowVal('rp', pv, fmt(pv) + ' poeng',   cp);
+  setResRowVal('rs', sv, fmtGB(sv),            cs);
+  chkCap(tot);
+}
+
+function chkCap(tot) {
+  var cap = parseFloat(el('cap-in').value);
+  var st = el('cap-st');
+  if (!cap || isNaN(cap)) { st.className = 'cb-status'; return; }
+  var ov = tot - (PLANS[cur].sub || 0);
+  if (ov > cap) { st.textContent = 'Overforbruk (' + fkr(ov) + ') overstiger grensen på ' + fkr(cap) + '. Stoppes automatisk.'; st.className = 'cb-status show warn'; }
+  else          { st.textContent = 'God margin — ' + fkr(cap - ov) + ' igjen til grensen.'; st.className = 'cb-status show ok'; }
+}
+
+window.addEventListener('scroll', function() { document.getElementById('nav').classList.toggle('shadow', window.scrollY > 40); }, { passive: true });
+
+document.querySelectorAll('.faq-trigger').forEach(function(trigger) {
+  trigger.addEventListener('click', function() {
+    var item = trigger.closest('.faq-item');
+    var isOpen = item.classList.contains('is-open');
+    document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('is-open'); });
+    if (!isOpen) item.classList.add('is-open');
+  });
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var href = a.getAttribute('href');
+    if (href === '#') return;
+    var target = document.querySelector(href);
+    if (target) { e.preventDefault(); window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 70, behavior: 'smooth' }); }
+  });
+});
+
+selP('smb', document.querySelector('[data-plan="smb"]'));
+</script>
+</body>
+</html>
